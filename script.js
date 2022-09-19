@@ -6,6 +6,7 @@ const colorBtns = document.querySelectorAll('.colors .option');
 const colorPicker = document.querySelector('#color-picker');
 const clearCanvas = document.querySelector('.clear-canvas');
 const saveImg = document.querySelector('.save-img');
+const EraserBtn = document.querySelector("#eraser");
 
 const ctx = canvas.getContext("2d");
 
@@ -14,6 +15,7 @@ let isDraw = false;
 let selectedTool = 'brush';
 let brushWidth = 5;
 let selectedColor = "#000";
+let bEraser = false;
 
 const setCanvasBackground = () =>{
     ctx.fillStyle = "#fff";
@@ -53,6 +55,7 @@ const drawTriangle = (e) =>{
 
 const startDrawing = (e) =>{
    isDraw = true;
+   bEraser = true;
    prevMouseX = e.offsetX;
    prevMouseY = e.offsetY;
    ctx.beginPath();
@@ -67,14 +70,31 @@ const drawing = (e) =>{
     if(!isDraw) return;
     ctx.putImageData(snapshot, 0, 0);
 
-    if(selectedTool === "brush" || selectedColor === "eraser"){
-        ctx.strokeStyle = selectedTool === "eraser" ? "#fff" : selectedColor;
+    // Pencil function
+    if(selectedTool === "brush"){
         ctx.lineTo(e.offsetX, e.offsetY);
         ctx.stroke();
+        bEraser = false;
+    // Eraser function
+    }else if(selectedTool === "eraser"){
+        ctx.strokeStyle = selectedColor;
+        ctx.lineWidth = brushWidth;
+        ctx.beginPath();
+        if(bEraser === true){
+            ctx.globalCompositeOperation = "destination-out";
+        }else{
+            ctx.globalCompositeOperation = "source-over";
+        }
+        ctx.moveTo(prevMouseX - e.offsetX, prevMouseY - e.offsetY);
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.stroke();
+    // Draw Rectangle 
     } else if(selectedTool === "rectangle"){
         drawRect(e);
+    // Draw Circle
     } else if(selectedTool === "circle"){
         drawCircle(e);
+    // Draw Triangle
     }else{
         drawTriangle(e);
     }
@@ -110,6 +130,8 @@ clearCanvas.addEventListener("click", () =>{
     link.click();
 });
 
+EraserBtn.addEventListener("click", () => bEraser = true);
+
 canvas.addEventListener("mousedown", startDrawing);
 canvas.addEventListener("mousemove", drawing);
-canvas.addEventListener("mouseup", () => isDraw = false);
+canvas.addEventListener("mouseup", () => {isDraw = false; bEraser = false});
