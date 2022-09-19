@@ -89,4 +89,60 @@ section{
     border: 1px solid #bfbfbf;
 }
 
+.colors .option:nth-child(2){
+    background-color: #000;
+  }
+  .colors .option:nth-child(3){
+    background-color: #E02020;
+  }
+  .colors .option:nth-child(4){
+    background-color: #6DD400;
+  }
+  .colors .option:nth-child(5){
+    background-color: #4A98F7;
+}
 
+.colors .option:first-child.selected::before{
+    border-color: #ccc;
+  }
+  .option #color-picker{
+    opacity: 0;
+    cursor: pointer;
+}
+
+.buttons button{
+    width: 100%;
+    color: #fff;
+    border: none;
+    outline: none;
+    padding: 11px 0;
+    font-size: 0.9rem;
+    margin-bottom: 13px;
+    background: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.buttons .clear-canvas{
+    color: #6C757D;
+  border: 1px solid #6C757D;
+  transition: all 0.3s ease;
+}
+
+.clear-canvas:hover{
+    color: #fff;
+    background: #6C757D;
+}
+
+.buttons .save-img{
+    background: #4A98F7;
+    border: 1px solid #4A98F7;
+}
+.drawing-board{
+    flex: 1;
+    overflow: hidden;
+}
+.drawing-board canvas{
+    height: 100%;
+    width: 100%;
+}
