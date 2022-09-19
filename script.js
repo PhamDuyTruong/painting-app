@@ -78,4 +78,38 @@ const drawing = (e) =>{
     }else{
         drawTriangle(e);
     }
-}
+};
+
+toolBtns.forEach(btn => {
+    btn.addEventListener("click", () =>{
+        document.querySelector(".options .active").classList.remove("active");
+        btn.classList.add("active");
+        selectedTool = btn.id;
+    })
+});
+
+sizeSlider.addEventListener('change', () => brushWidth = sizeSlider.value);
+
+colorBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+        document.querySelector(".options .selected").classList.remove("selected");
+        btn.classList.add('selected');
+        selectedColor = window.getComputedStyle(btn).getPropertyValue("background-color");
+    })
+});
+
+colorPicker.addEventListener("change", () =>{
+    colorPicker.parentElement.style.background = colorPicker.value;
+    colorPicker.parentElement.click();
+});
+
+clearCanvas.addEventListener("click", () =>{
+    const link = document.createElement("a");
+    link.download = `${Date.now()}.jpg`;
+    link.href = canvas.toDataURL();
+    link.click();
+});
+
+canvas.addEventListener("mousedown", startDrawing);
+canvas.addEventListener("mousemove", drawing);
+canvas.addEventListener("mouseup", () => isDraw = false);
