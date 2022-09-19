@@ -17,6 +17,7 @@ let brushWidth = 5;
 let selectedColor = "#000";
 let bEraser = false;
 
+// Set to background
 const setCanvasBackground = () =>{
     ctx.fillStyle = "#fff";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -30,6 +31,7 @@ window.addEventListener('load', () =>{
     setCanvasBackground();
 });
 
+// Draw Rectangle
 const drawRect = (e) =>{
     if(!fillColor.checked){
         return ctx.strokeRect(e.offsetX, e.offsetY, prevMouseX - e.offsetX, prevMouseY - e.offsetY);
@@ -37,6 +39,7 @@ const drawRect = (e) =>{
     ctx.fillRect(e.offsetX, e.offsetY, prevMouseX - e.offsetX, prevMouseY - e.offsetY);
 }
 
+// Draw Circle
 const drawCircle = (e) =>{
     ctx.beginPath();
     let radius = Math.sqrt(Math.pow((prevMouseX - e.offsetX), 2) + Math.pow((prevMouseY - e.offsetY), 2));
@@ -44,6 +47,7 @@ const drawCircle = (e) =>{
     fillColor.checked ? ctx.fill() : ctx.stroke();
 };
 
+// Draw Triangle
 const drawTriangle = (e) =>{
     ctx.beginPath();
     ctx.moveTo(prevMouseX, prevMouseY);
@@ -100,6 +104,7 @@ const drawing = (e) =>{
     }
 };
 
+// Button to select tool to draw
 toolBtns.forEach(btn => {
     btn.addEventListener("click", () =>{
         document.querySelector(".options .active").classList.remove("active");
@@ -108,8 +113,10 @@ toolBtns.forEach(btn => {
     })
 });
 
+// Button to adjust slider
 sizeSlider.addEventListener('change', () => brushWidth = sizeSlider.value);
 
+// Button to select color 
 colorBtns.forEach(btn => {
     btn.addEventListener("click", () => {
         document.querySelector(".options .selected").classList.remove("selected");
@@ -118,12 +125,20 @@ colorBtns.forEach(btn => {
     })
 });
 
+// Button to choose color style
 colorPicker.addEventListener("change", () =>{
     colorPicker.parentElement.style.background = colorPicker.value;
     colorPicker.parentElement.click();
 });
 
+// Button clear to clear Canvas
 clearCanvas.addEventListener("click", () =>{
+    ctx.clearRect(0,0, canvas.width, canvas.height);
+    setCanvasBackground();
+})
+
+// Button to download image
+saveImg.addEventListener("click", () =>{
     const link = document.createElement("a");
     link.download = `${Date.now()}.jpg`;
     link.href = canvas.toDataURL();
